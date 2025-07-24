@@ -1,0 +1,23 @@
+# .gitignore for .NET + native libs on macOS
+
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore user-specific files
+*.user
+*.suo
+
+# Ignore VS Code settings folder (if you use VS Code)
+.vscode/
+
+# Ignore native dylib binaries (optional — include if you prefer to build locally)
+**/libnative.dylib
+
+# Ignore logs and temp files
+*.log
+*.tmp
+
+# Ignore macOS system files
+.DS_Store
+
