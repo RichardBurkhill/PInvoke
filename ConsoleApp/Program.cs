@@ -6,13 +6,13 @@ namespace ConsoleApp
 {
     class Program
     {
-        [DllImport("libnative.dylib", EntryPoint = "add_numbers")]
-        public static extern int AddNumbers(int a, int b);
+        [DllImport("libnative.dylib", EntryPoint = "query_opencl")]
+        public static extern void QueryOpenCL();
 
         static void Main(string[] args)
         {
-            int result = AddNumbers(5, 7);
-            Console.WriteLine($"5 + 7 = {result}");
+            Console.WriteLine("Calling OpenCL...");
+            QueryOpenCL();
         }
     }
-}
+}  // namespace ConsoleApp
