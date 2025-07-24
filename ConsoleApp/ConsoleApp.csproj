@@ -7,4 +7,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+<Target Name="CopyNativeLib" AfterTargets="Build">
+  <Copy 
+    SourceFiles="../NativeLib/libnative.dylib" 
+    DestinationFolder="$(OutputPath)" 
+    SkipUnchangedFiles="true" />
+</Target>
+
 </Project>
