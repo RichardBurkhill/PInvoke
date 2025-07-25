@@ -44,5 +44,8 @@ extern "C" {
         }
 
         delete[] platforms;
+
+        trigger_callback();
+        std::cout << "Callback triggered after querying OpenCL platforms." << std::endl;
     }
 }
