@@ -25,6 +25,8 @@ namespace ConsoleApp
             Console.WriteLine("C++ said: " + msg);
         }
 
+        [DllImport("libnative.dylib")]
+        public static extern void add1_to_array_elements(float[] data, int length);
         static void Main(string[] args)
         {
             // Register the managed callback with the native library
@@ -35,6 +37,12 @@ namespace ConsoleApp
 
             Console.WriteLine("Calling OpenCL...");
             QueryOpenCL();
+
+            float[] values = { 2.5f, 3.0f, 7.1f };
+            Console.WriteLine("Before: " + string.Join(", ", values));
+            add1_to_array_elements(values, values.Length);
+            // Print the modified array
+            Console.WriteLine("After:  " + string.Join(", ", values));
         }
     }
 }  // namespace ConsoleApp

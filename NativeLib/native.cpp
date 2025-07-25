@@ -1,6 +1,6 @@
 #include <OpenCL/opencl.h>
 #include <iostream>
-
+#include "OpenCLWrapper.hpp"
 
 typedef void(*CallbackFunc)(const char*);
 
@@ -21,6 +21,16 @@ extern "C" {
         return a + b;
     }
 }
+
+extern "C" void add1_to_array_elements(float* data, int length) {
+    std::string kernelCode = loadKernelFromFile("/Users/richardburkhill/dev/PInoke/NativeLib/add_one.cl");
+    OpenCLWrapper opencl(kernelCode, "add_one");
+    
+    std::vector<float> vec(data, data + length);
+    opencl.addOneToArray(vec);
+    std::memcpy(data, vec.data(), length * sizeof(float));
+}
+
 
 extern "C" {
     
