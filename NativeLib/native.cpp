@@ -27,10 +27,10 @@ extern "C" void add1_to_array_elements(float* data, int length) {
     OpenCLWrapper opencl(kernelCode, "add_one");
     
     std::vector<float> vec(data, data + length);
-    opencl.addOneToArray(vec);
+    opencl.set_data(vec.data(), vec.size() * sizeof(float));
+    opencl.runAlgorithm();
     std::memcpy(data, vec.data(), length * sizeof(float));
 }
-
 
 extern "C" {
     

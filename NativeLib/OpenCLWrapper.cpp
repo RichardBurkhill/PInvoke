@@ -16,8 +16,8 @@ std::string loadKernelFromFile(const std::string& path) {
                         std::istreambuf_iterator<char>());
 }
 
-OpenCLWrapper::OpenCLWrapper(const std::string& kernelSourceCode, const std::string& kernelFunctionName) {
-    initOpenCL(kernelSourceCode, kernelFunctionName);
+OpenCLWrapper::OpenCLWrapper(const std::string& kernelSourceCode, const std::string& kernelFunctionName){
+    find_algorithm(kernelSourceCode, kernelFunctionName);
 }
 
 OpenCLWrapper::~OpenCLWrapper() {
@@ -34,7 +34,7 @@ void OpenCLWrapper::checkErr(cl_int err, const char* name) {
     }
 }
 
-void OpenCLWrapper::initOpenCL(const std::string& kernelSourceCode, const std::string& kernelFunctionName) {
+void OpenCLWrapper::find_algorithm(const std::string& kernelSourceCode, const std::string& kernelFunctionName) {
     cl_int err;
 
     // Step 1: Get the first available OpenCL platform (e.g., Apple)
@@ -66,7 +66,7 @@ void OpenCLWrapper::initOpenCL(const std::string& kernelSourceCode, const std::s
     checkErr(err, "clCreateKernel");
 }
 
-void OpenCLWrapper::addOneToArray(std::vector<float>& data) {
+void OpenCLWrapper::set_data_and_run_algorithm(std::vector<float>& data) {
     cl_int err;
     size_t dataSize = data.size() * sizeof(float);
 
@@ -78,6 +78,11 @@ void OpenCLWrapper::addOneToArray(std::vector<float>& data) {
         data.data(),
         &err
     );
+    checkErr(err, "clCreateBuffer");
+
+    /////////////////////////
+    // Run the kernel
+    /////////////////////////
 
     // Step 2: Set the buffer as the kernel argument
     clSetKernelArg(kernel, 0, sizeof(cl_mem), &buffer);
@@ -96,12 +101,14 @@ void OpenCLWrapper::addOneToArray(std::vector<float>& data) {
         nullptr,      // Local size (let OpenCL choose)
         0, nullptr, nullptr
     );
+    checkErr(err, "clEnqueueNDRangeKernel");
 
     // Step 5: Wait for kernel execution to complete
     clFinish(queue);
 
     // Step 6: Read the result data back from GPU into the original vector
-    clEnqueueReadBuffer(queue, buffer, CL_TRUE, 0, dataSize, data.data(), 0, nullptr, nullptr);
+    err = clEnqueueReadBuffer(queue, buffer, CL_TRUE, 0, dataSize, data.data(), 0, nullptr, nullptr);
+    checkErr(err, "clEnqueueReadBuffer");
 
     // Step 7: Free the buffer memory on the GPU
     clReleaseMemObject(buffer);
