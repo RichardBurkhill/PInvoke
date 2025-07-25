@@ -27,8 +27,16 @@ extern "C" void add1_to_array_elements(float* data, int length) {
     OpenCLWrapper opencl(kernelCode, "add_one");
     
     std::vector<float> vec(data, data + length);
-    opencl.set_data(vec.data(), vec.size() * sizeof(float));
-    opencl.runAlgorithm();
+    opencl.set_data_and_run_algorithm(vec);
+    std::memcpy(data, vec.data(), length * sizeof(float));
+}
+
+extern "C" void times2_to_array_elements(float* data, int length) {
+    std::string kernelCode = loadKernelFromFile("/Users/richardburkhill/dev/PInoke/NativeLib/times_two.cl");
+    OpenCLWrapper opencl(kernelCode, "times_two");
+    
+    std::vector<float> vec(data, data + length);
+    opencl.set_data_and_run_algorithm(vec);
     std::memcpy(data, vec.data(), length * sizeof(float));
 }
 

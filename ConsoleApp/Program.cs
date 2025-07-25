@@ -27,6 +27,9 @@ namespace ConsoleApp
 
         [DllImport("libnative.dylib")]
         public static extern void add1_to_array_elements(float[] data, int length);
+
+        [DllImport("libnative.dylib")]
+        public static extern void times2_to_array_elements(float[] data, int length);
         static void Main(string[] args)
         {
             // Register the managed callback with the native library
@@ -41,6 +44,13 @@ namespace ConsoleApp
             float[] values = { 2.5f, 3.0f, 7.1f };
             Console.WriteLine("Before: " + string.Join(", ", values));
             add1_to_array_elements(values, values.Length);
+            // Print the modified array
+            Console.WriteLine("After:  " + string.Join(", ", values));
+
+            values = new float[] { 2.5f, 3.0f, 7.1f, 1.0f, 4.2f, 6.9f, 8.3f, 5.5f, 9.0f, 10.1f, 11.2f, 12.3f, 13.4f, 14.5f, 15.6f, 16.7f, 17.8f, 18.9f, 19.0f, 20.1f };
+        
+            Console.WriteLine("Before: " + string.Join(", ", values));
+            times2_to_array_elements(values, values.Length);
             // Print the modified array
             Console.WriteLine("After:  " + string.Join(", ", values));
         }
