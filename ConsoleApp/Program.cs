@@ -14,8 +14,22 @@ namespace ConsoleApp
         [DllImport("libnative.dylib", EntryPoint = "query_opencl")]
         public static extern void QueryOpenCL();
 
+        [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
+        public delegate void CallbackDelegate(string message);
+
+        [DllImport("libnative.dylib", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void register_callback(CallbackDelegate callback);
+
+        static void MyManagedCallback(string msg)
+        {
+            Console.WriteLine("C++ said: " + msg);
+        }
+
         static void Main(string[] args)
         {
+            // Register the managed callback with the native library
+            register_callback(MyManagedCallback);
+
             int result = AddNumbers(5, 7);
             Console.WriteLine($"5 + 7 = {result}");
 

@@ -2,6 +2,20 @@
 #include <iostream>
 
 
+typedef void(*CallbackFunc)(const char*);
+
+static CallbackFunc g_callback = nullptr;
+
+extern "C" void register_callback(CallbackFunc cb) {
+    g_callback = cb;
+}
+
+extern "C" void trigger_callback() {
+    if (g_callback) {
+        g_callback("Hello from C++");
+    }
+}
+
 extern "C" {
     int add_numbers(int a, int b) {
         return a + b;
