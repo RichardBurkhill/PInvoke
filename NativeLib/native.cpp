@@ -1,13 +1,34 @@
-#include "opencl_manager.hpp"
+#include <OpenCL/opencl.h>
 #include <iostream>
 
-extern "C" void query_opencl() {
-    OpenCLManager manager;
-    if (!manager.Initialize()) {
-        std::cout << "Failed to initialize OpenCL manager.\n";
-        return;
-    }
 
-    std::string info = manager.GetPlatformAndDeviceInfo();
-    std::cout << info;
+extern "C" {
+    int add_numbers(int a, int b) {
+        return a + b;
+    }
+}
+
+extern "C" {
+    
+    void query_opencl() {
+        cl_uint platformCount = 0;
+        clGetPlatformIDs(0, nullptr, &platformCount);
+        std::cout << "Number of OpenCL platforms: " << platformCount << std::endl;
+
+        if (platformCount == 0) {
+            std::cout << "No OpenCL platforms found." << std::endl;
+            return;
+        }
+
+        cl_platform_id* platforms = new cl_platform_id[platformCount];
+        clGetPlatformIDs(platformCount, platforms, nullptr);
+
+        for (cl_uint i = 0; i < platformCount; ++i) {
+            char platformName[128];
+            clGetPlatformInfo(platforms[i], CL_PLATFORM_NAME, 128, platformName, nullptr);
+            std::cout << "Platform " << i << ": " << platformName << std::endl;
+        }
+
+        delete[] platforms;
+    }
 }
