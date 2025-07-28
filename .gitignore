@@ -21,3 +21,5 @@ obj/
 # Ignore macOS system files
 .DS_Store
 
+#Ignore PInvokeGUI build files
+app.manifest

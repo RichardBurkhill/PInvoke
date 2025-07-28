@@ -23,7 +23,7 @@ extern "C" {
 }
 
 extern "C" void add1_to_array_elements(float* data, int length) {
-    std::string kernelCode = loadKernelFromFile("/Users/richardburkhill/dev/PInoke/NativeLib/add_one.cl");
+    std::string kernelCode = loadKernelFromFile("/Users/richardburkhill/dev/PInvoke/NativeLib/add_one.cl");
     OpenCLWrapper opencl(kernelCode, "add_one");
     
     std::vector<float> vec(data, data + length);
@@ -32,7 +32,7 @@ extern "C" void add1_to_array_elements(float* data, int length) {
 }
 
 extern "C" void times2_to_array_elements(float* data, int length) {
-    std::string kernelCode = loadKernelFromFile("/Users/richardburkhill/dev/PInoke/NativeLib/times_two.cl");
+    std::string kernelCode = loadKernelFromFile("/Users/richardburkhill/dev/PInvoke/NativeLib/times_two.cl");
     OpenCLWrapper opencl(kernelCode, "times_two");
     
     std::vector<float> vec(data, data + length);
